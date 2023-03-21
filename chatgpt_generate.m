@@ -1,20 +1,24 @@
-% Replace YOUR_API_KEY with your OpenAI API key
-apikey = 'YOUR_API_KEY';
+% Read the API key from a text file
+apikey = fileread('api_key.txt');
 
 % Specify the prompt and number of tokens to generate
-prompt = 'Hello, my name is ';
+prompt = 'Once upon a time, ';
 num_tokens = 50;
 
-% Encode the prompt using UTF-8
-prompt_encoded = unicode2native(prompt, 'UTF-8');
+% Generate text using ChatGPT
+url = 'https://api.openai.com/v1/completions';
 
-% Generate the text using ChatGPT
-url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-options = weboptions('HeaderFields', {'Content-Type' 'application/json', 'Authorization' ['Bearer ' apikey]});
-data = struct('prompt', prompt_encoded, 'max_tokens', num_tokens);
+% Specify options for the web request
+header_fields = {'Content-Type' 'application/json'; 'Authorization' ['Bearer ' apikey]};
+options = weboptions('HeaderFields', header_fields, 'Timeout', 60);
+
+% Specify the model to use and the number of tokens to generate
+data = struct('prompt', prompt, 'max_tokens', num_tokens, 'model', 'text-davinci-003');
+
+% Send the request to ChatGPT and get the response
 response = webwrite(url, data, options);
 text_encoded = response.choices(1).text;
-text = native2unicode(text_encoded, 'UTF-8');
+text = char(text_encoded);
 
 % Display the generated text
 disp(text);
