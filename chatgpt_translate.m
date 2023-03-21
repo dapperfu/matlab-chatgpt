@@ -1,25 +1,30 @@
-% Read the API key from a text file
-apikey = fileread('api_key.txt');
+error('Work in progress.')
+% Set the API endpoint
+api_endpoint = 'https://api.openai.com/v1/translate';
 
-% Specify the source and target languages, and the text to be translated
-source_lang = 'en';
-target_lang = 'es';
-text_to_translate = 'Hello, how are you?';
+% Read the API key from file
+api_key = fileread('api_key.txt');
+headers = {'Content-Type', 'application/json'; 'Authorization', ['Bearer ' strtrim(api_key)]};
 
-% Generate text using ChatGPT
-url = 'https://api.openai.com/v1/translate';
+% Set the options for the web request
+options = weboptions('HeaderFields', headers, 'RequestMethod', 'post', 'MediaType', 'application/json', 'Timeout', 120);
 
-% Specify options for the web request
-header_fields = {'Content-Type' 'application/json'; 'Authorization' ['Bearer ' apikey]};
-options = weboptions('HeaderFields', header_fields, 'Timeout', 60);
+% Read the text to translate from file
+text_to_translate = fileread('translate_me.txt');
 
-% Specify the model to use and the text to be translated
-data = struct('text', text_to_translate, 'target_language', target_lang, 'source_language', source_lang, 'model', 'text-davinci-003');
+% Set the request data
+request_data = struct('text', text_to_translate, 'source', 'en', 'target', 'de');
 
-% Send the request to ChatGPT and get the response
-response = webwrite(url, data, options);
-translated_text_encoded = response.translations.text;
-translated_text = char(translated_text_encoded);
+% Convert the request data to JSON
+request_json = jsonencode(request_data);
 
-% Display the translated text
-disp(translated_text);
+% Send the request to the API endpoint
+response = webwrite(api_endpoint, request_json, options);
+
+% Extract the translated text from the response
+translated_text = response.data.translations.text;
+
+% Write the translated text to file
+fileID = fopen('translated.txt', 'w');
+fprintf(fileID, '%s', translated_text);
+fclose(fileID);
