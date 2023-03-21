@@ -1,0 +1,1 @@
+% This script uses ChatGPT to generate an image based on a given text prompt. The user can specify the prompt, as well as various parameters such as image size, resolution, and style. The script will generate an image and save it to disk.

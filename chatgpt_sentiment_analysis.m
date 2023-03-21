@@ -1,0 +1,1 @@
+% This script uses ChatGPT to perform sentiment analysis on a given text. The user can specify the text to be analyzed, and the script will return a score indicating the sentiment of the text (positive, negative, or neutral).
