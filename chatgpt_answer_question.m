@@ -1,5 +1,7 @@
-% Replace YOUR_API_KEY with your OpenAI API key
-apikey = 'YOUR_API_KEY';
+% Read the API key from a text file
+file_id = fopen('api_key.txt', 'r');
+apikey = fscanf(file_id, '%s');
+fclose(file_id);
 
 % Specify the question and context in which it should be answered
 question = 'What is the capital of France?';
@@ -13,8 +15,8 @@ context_encoded = unicode2native(context, 'UTF-8');
 url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
 % Specify options for the web request
-header = {'Content-Type' 'application/json'; 'Authorization' ['Bearer ' apikey]};
-options = weboptions('HeaderFields', header);
+header_fields = {'Content-Type' 'application/json'; 'Authorization' ['Bearer ' apikey]};
+options = weboptions('HeaderFields', header_fields);
 
 % Specify the prompt and number of tokens to generate
 data = struct('prompt', [question_encoded context_encoded], 'max_tokens', 1000);
