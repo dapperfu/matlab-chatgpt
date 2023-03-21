@@ -13,11 +13,8 @@ context_encoded = unicode2native(context, 'UTF-8');
 url = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
 % Specify options for the web request
-header_content_type = 'Content-Type';
-header_content_type_value = 'application/json';
-header_authorization = 'Authorization';
-header_authorization_value = ['Bearer ' apikey];
-options = weboptions('HeaderFields', {header_content_type header_content_type_value, header_authorization header_authorization_value});
+header = {'Content-Type' 'application/json'; 'Authorization' ['Bearer ' apikey]};
+options = weboptions('HeaderFields', header);
 
 % Specify the prompt and number of tokens to generate
 data = struct('prompt', [question_encoded context_encoded], 'max_tokens', 1000);
