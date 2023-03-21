@@ -35,4 +35,9 @@ If you find any issues with these scripts or would like to suggest improvements,
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+# Birb:
+
+- Created from `chatgpt_image_generation.m`
+- Using the prompt: "a bird sitting on a branch"
+
 ![](generated_image.png)
